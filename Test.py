@@ -1,7 +1,7 @@
 import numpy as np
 
-from DataStructures import Alternative, ProbabilityDistribution
-from Entscheidungsmodelle import AdditiveModel, EasyAHP, Koerth, MaxiMin, MaxiMax, Hurwicz, Laplace, NiehansSavage
+from DataStructures import *
+from Entscheidungsmodelle import *
 
 alts = [Alternative("Wohnung 1", [4, 6, 8, 5]),
         Alternative("Wohnung 2", [9, 3, 6, 4]),
@@ -37,10 +37,26 @@ alts = [Alternative("a1", [2000, 2500, 5000, 500]),
 # niesav = NiehansSavage(alts)
 # print(niesav())
 
-prob_dist = ProbabilityDistribution([64, 25], [0.4, 0.6])
-print(prob_dist.mean())
-print(prob_dist.mean_u_func(lambda x: x ** 0.5 + 8))
-print(prob_dist.security_equvivalent(lambda x: x ** 0.5 + 8))
-print(prob_dist.risk_bonus(lambda x: x ** 0.5 + 8))
-prob_dist.plot_mean_u_func(lambda x: x ** 0.5 + 8, 0, 50)
-prob_dist.plot_mean_u_func(lambda x: x ** 0.5 + 8, 30, 45)
+# prob_dist = ProbabilityDistribution([64, 25], [0.4, 0.6])
+# print(prob_dist.mean())
+# print(prob_dist.mean_u_func(lambda x: x ** 0.5 + 8))
+# print(prob_dist.security_equvivalent(lambda x: x ** 0.5 + 8))
+# print(prob_dist.risk_bonus(lambda x: x ** 0.5 + 8))
+# prob_dist.plot_mean_u_func(lambda x: x ** 0.5 + 8, 0, 50)
+# prob_dist.plot_mean_u_func(lambda x: x ** 0.5 + 8, 30, 45)
+
+# print(correlation_coefficient([2, 4, 6, 3, 0, -3, -6, 0, 20, 40], [30, 60, 90, 45, 0, -45, -90, 0, 300, 600]))
+
+aktien = [Aktie(0.06, 0.1), Aktie(0.12, 0.15)]
+port = Portfolio(aktien, [0.3, 0.7], 0.2)
+#print(port.portfolio_rendite())
+#print(port.portfolio_volatilitaet())
+#print(port.mvp())
+#print(port.mean_mvp())
+#print(port.std_mvp())
+
+#print(ara('x**0.5+8'))
+#plot_ara('x**0.5+8', 'x**0.1+4', 0, 100)
+#print(rra('x**0.5+8'))
+
+plot_fsd(normal_dist_func(0.16, 0.2**2), normal_dist_func(0.04, 0.2**2), -0.8, 1)
