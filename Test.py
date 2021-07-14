@@ -6,13 +6,13 @@ from Entscheidungsmodelle import *
 alts = [Alternative("Wohnung 1", [4, 6, 8, 5]),
         Alternative("Wohnung 2", [9, 3, 6, 4]),
         Alternative("Wohnung 3", [2, 9, 6, 7])]
-additive_model = AdditiveModel(alts, [0.1, 0.2, 0.3, 0.4])
+additive_model = AdditivesModel(alts, [0.1, 0.2, 0.3, 0.4])
 # print(additive_model())
 
-ahp = EasyAHP(alts, np.asarray([[1, 2, 3, 4],
-                                [0.5, 1, 2, 3],
-                                [0.33, 0.5, 1, 2],
-                                [0.25, 0.33, 0.5, 1]]))
+ahp = EinfacheAHP(alts, np.asarray([[1, 4, 2, 6],
+                                    [0.25, 1, 0.5, 2],
+                                    [0.5, 2, 1, 4],
+                                    [1/6, 0.5, 0.25, 1]]))
 # print(ahp())
 
 koerth = Koerth(alts)
@@ -47,8 +47,8 @@ alts = [Alternative("a1", [2000, 2500, 5000, 500]),
 
 # print(correlation_coefficient([2, 4, 6, 3, 0, -3, -6, 0, 20, 40], [30, 60, 90, 45, 0, -45, -90, 0, 300, 600]))
 
-aktien = [Aktie(0.06, 0.1), Aktie(0.12, 0.15)]
-port = Portfolio(aktien, [0.3, 0.7], 0.2)
+#aktien = [Aktie(0.06, 0.1), Aktie(0.12, 0.15)]
+#port = Portfolio(aktien, [0.3, 0.7], 0.2)
 #print(port.portfolio_rendite())
 #print(port.portfolio_volatilitaet())
 #print(port.mvp())
@@ -59,4 +59,6 @@ port = Portfolio(aktien, [0.3, 0.7], 0.2)
 #plot_ara('x**0.5+8', 'x**0.1+4', 0, 100)
 #print(rra('x**0.5+8'))
 
-plot_fsd(normal_dist_func(0.16, 0.2**2), normal_dist_func(0.04, 0.2**2), -0.8, 1)
+#plot_fsd(normal_dist_func(0.16, 0.2**2), normal_dist_func(0.04, 0.2**2), -0.8, 1)
+
+print(foobar("-e**(-2.5*w)", 'w', [normal_dist_func(0.1, 0.2**2)], "0.02", "x"))

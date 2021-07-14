@@ -1,10 +1,10 @@
 import math
 
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import fsolve
 from sympy import *
 from sympy.utilities.lambdify import lambdify
-import matplotlib.pyplot as plt
 
 
 class Alternative:
@@ -36,31 +36,31 @@ class Entscheidungsmodell:
         raise NotImplementedError("Implementier es doch selber")
 
 
-class ProbabilityDistribution:
+class Wahrscheinlichkeitsverteilung:
 
     def __init__(self, vals, weights):
         self.vals = np.asarray(vals)
         self.weights = np.asarray(weights)
 
-    def mean(self, vals=None):
+    def erwartungswert(self, vals=None):
         if vals is None:
             return self.vals @ np.transpose(self.weights)
         return vals @ np.transpose(self.weights)
 
-    def mean_u_func(self, func):
+    def erwartungswert_nutzenfunktion(self, func):
         u_vals = np.asarray([func(val) for val in self.vals])
-        return self.mean(u_vals)
+        return self.erwartungswert(u_vals)
 
-    def security_equvivalent(self, func):
-        u_mean = self.mean_u_func(func)
+    def sicherheitsäquvivalent(self, func):
+        u_mean = self.erwartungswert_nutzenfunktion(func)
         root_func = lambda x: func(x) - u_mean
         sae = fsolve(root_func, 0)
         return sae[0]
 
-    def risk_bonus(self, func):
-        return self.mean() - self.security_equvivalent(func)
+    def risikoprämie(self, func):
+        return self.erwartungswert() - self.sicherheitsäquvivalent(func)
 
-    def plot_mean_u_func(self, func, min, max, steps=11):
+    def plot_erwartungswert_nutzenfunktion(self, func, min, max, steps=11):
         f, ax = plt.subplots(1)
 
         # plot u(x)
@@ -69,16 +69,16 @@ class ProbabilityDistribution:
         ax.plot(xs, ys)
 
         # plot mean
-        mean_ys = np.linspace(0, func(self.mean()), 101)
-        ax.plot([self.mean() for _ in range(101)], mean_ys, label='E(x)')
+        mean_ys = np.linspace(0, func(self.erwartungswert()), 101)
+        ax.plot([self.erwartungswert() for _ in range(101)], mean_ys, label='E(x)')
 
         # plot sicherheitsäquvivalent
-        mean_ys = np.linspace(0, func(self.security_equvivalent(func)), 101)
-        ax.plot([self.security_equvivalent(func) for _ in range(101)], mean_ys, label='SÄ')
+        mean_ys = np.linspace(0, func(self.sicherheitsäquvivalent(func)), 101)
+        ax.plot([self.sicherheitsäquvivalent(func) for _ in range(101)], mean_ys, label='SÄ')
 
         # plot E(u(x))
-        mean_xs = np.linspace(0, self.security_equvivalent(func), 101)
-        ax.plot(mean_xs, [func(self.security_equvivalent(func)) for _ in range(101)], label='E(u(x))')
+        mean_xs = np.linspace(0, self.sicherheitsäquvivalent(func), 101)
+        ax.plot(mean_xs, [func(self.sicherheitsäquvivalent(func)) for _ in range(101)], label='E(u(x))')
 
         plt.xticks(np.linspace(min, max, steps))
         ax.set_ylim(ymin=0)
@@ -102,7 +102,7 @@ class Portfolio:
         self.korrelation = korrelation
 
     def portfolio_rendite(self):
-        renditen = np.asarray([akt.mean for akt in self.aktien])
+        renditen = np.asarray([akt.erwartungswert for akt in self.aktien])
         return renditen @ np.transpose(np.asarray(self.weights))
 
     def portfolio_volatilitaet(self):
@@ -121,13 +121,13 @@ class Portfolio:
             1].std * self.korrelation)
         return mvp
 
-    def mean_mvp(self):
+    def erwartungswert_mvp(self):
         if len(self.aktien) > 2:
             raise NotImplementedError("Sorry deine Aufgabe jetzt")
         xa = self.mvp()
-        return xa * self.aktien[0].mean + (1. - xa) * self.aktien[1].mean
+        return xa * self.aktien[0].erwartungswert + (1. - xa) * self.aktien[1].erwartungswert
 
-    def std_mvp(self):
+    def volatilität_mvp(self):
         if len(self.aktien) > 2:
             raise NotImplementedError("Sorry das musst du selber machen")
         xa = self.mvp()
@@ -137,7 +137,7 @@ class Portfolio:
                              1].std * self.korrelation)
 
 
-def correlation_coefficient(z1, z2):
+def korrelationskoeffizient(z1, z2):
     return np.corrcoef(z1, z2)[0, 1]
 
 
@@ -212,5 +212,27 @@ def plot_fsd(func1, func2, min, max, symbol1='x', symbol2='x'):
     plt.legend()
     plt.show()
 
+
 def normal_dist_func(mean, var):
     return '(1/sqrt(2*3.14159265359*{}))*e**(-((x-{})**2)/(2{}))'.format(var, mean, var)
+
+# nutzenfunktion muss mit anderem Symbol geschrieben sein, damit wir dieses austauschen können
+# inv_func_1 muss als liste gegeben sein
+# def foobar(u_func, u_func_symbol, inv_func_1, inv_func_2, symbol='x'):
+#     factor = 1 / len(inv_func_1)
+#     base_fn = u_func
+#     final_fn = ""
+#
+#     for func in inv_func_1:
+#         final_fn += "+{}*(".format(factor) + base_fn.replace(u_func_symbol,
+#                                                              "({}*x+(1-x)*{})".format(func, inv_func_2)) + ")"
+#
+#     final_fn = parse_expr(final_fn)
+#     print(final_fn)
+#     y_ = Symbol('y')
+#     x_ = Symbol(symbol)
+#     x = maximum(final_fn, x_, Interval(0, 1))
+#     inverse = Eq(y_, final_fn)
+#     s = solve(inverse, x_)[0]
+#     max = s.subs(y_, x)
+#     return max

@@ -2,10 +2,10 @@ from DataStructures import Entscheidungsmodell
 import numpy as np
 
 
-class AdditiveModel(Entscheidungsmodell):
+class AdditivesModel(Entscheidungsmodell):
 
     def __init__(self, alts, weights):
-        super(AdditiveModel, self).__init__("Additive Model", alts)
+        super(AdditivesModel, self).__init__("Additive Model", alts)
         self.weights = weights
 
     def __call__(self, *args, **kwargs):
@@ -27,12 +27,12 @@ class AdditiveModel(Entscheidungsmodell):
         return self.alts[best_alt_ind], best_alt_val
 
 
-class EasyAHP(Entscheidungsmodell):
+class EinfacheAHP(Entscheidungsmodell):
 
     def __init__(self, alts, weight_matrix):
-        super(EasyAHP, self).__init__("Vereinfachte AHP", alts)
+        super(EinfacheAHP, self).__init__("Vereinfachte AHP", alts)
         weights = self.calc_weights(weight_matrix)
-        self.add_model = AdditiveModel(alts, weights)
+        self.add_model = AdditivesModel(alts, weights)
 
     def __call__(self, *args, **kwargs):
         return self.add_model()
