@@ -1,8 +1,7 @@
-from DataStructures.Entscheidungsmodelle import *
 from DataStructures.DataStructures import *
 
-def main():
 
+def main():
     u_func = lambda x: x ** 0.5 + 8
 
     wahrscheinlichkeitsverteilung = Wahrscheinlichkeitsverteilung([64, 25], [0.4, 0.6])
@@ -26,12 +25,12 @@ def main():
     print(portfolio.erwartungswert_mvp())
     print(portfolio.volatilität_mvp())
 
-
     u_func = "x**0.5+8"
     other_func = "x**0.1+4"
     print(ara(u_func))
     plot_ara(u_func, other_func, 0, 100)
     print(rra(u_func))
+
 
 if __name__ == "__main__":
     main()

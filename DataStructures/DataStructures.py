@@ -102,7 +102,7 @@ class Portfolio:
         self.korrelation = korrelation
 
     def portfolio_rendite(self):
-        renditen = np.asarray([akt.erwartungswert for akt in self.aktien])
+        renditen = np.asarray([akt.mean for akt in self.aktien])
         return renditen @ np.transpose(np.asarray(self.weights))
 
     def portfolio_volatilitaet(self):
@@ -125,7 +125,7 @@ class Portfolio:
         if len(self.aktien) > 2:
             raise NotImplementedError("Sorry deine Aufgabe jetzt")
         xa = self.mvp()
-        return xa * self.aktien[0].erwartungswert + (1. - xa) * self.aktien[1].erwartungswert
+        return xa * self.aktien[0].mean + (1. - xa) * self.aktien[1].mean
 
     def volatilität_mvp(self):
         if len(self.aktien) > 2:
@@ -207,3 +207,9 @@ def plot_fsd(func1, func2, min, max, symbol1='x', symbol2='x'):
 
 def normal_dist_func(mean, var):
     return '(1/sqrt(2*3.14159265359*{}))*e**(-((x-{})**2)/(2{}))'.format(var, mean, var)
+
+class Produkt:
+
+    def __init__(self, name, kosten, max_absatz=0, ):
+        pass
+
