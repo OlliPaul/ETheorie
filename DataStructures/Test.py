@@ -1,7 +1,5 @@
-import numpy as np
-
-from DataStructures import *
-from Entscheidungsmodelle import *
+from DataStructures.DataStructures import *
+from DataStructures.Entscheidungsmodelle import *
 
 alts = [Alternative("Wohnung 1", [4, 6, 8, 5]),
         Alternative("Wohnung 2", [9, 3, 6, 4]),

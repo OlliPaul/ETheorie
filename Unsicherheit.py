@@ -1,5 +1,5 @@
-from DataStructures import *
-from Entscheidungsmodelle import *
+from DataStructures.Entscheidungsmodelle import *
+from DataStructures.DataStructures import *
 
 
 def main():
