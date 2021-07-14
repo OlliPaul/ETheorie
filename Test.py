@@ -60,5 +60,3 @@ alts = [Alternative("a1", [2000, 2500, 5000, 500]),
 #print(rra('x**0.5+8'))
 
 #plot_fsd(normal_dist_func(0.16, 0.2**2), normal_dist_func(0.04, 0.2**2), -0.8, 1)
-
-print(foobar("-e**(-2.5*w)", 'w', [normal_dist_func(0.1, 0.2**2)], "0.02", "x"))

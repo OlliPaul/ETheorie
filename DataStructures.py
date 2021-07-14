@@ -47,12 +47,12 @@ class Wahrscheinlichkeitsverteilung:
             return self.vals @ np.transpose(self.weights)
         return vals @ np.transpose(self.weights)
 
-    def erwartungswert_nutzenfunktion(self, func):
+    def nutzenerwartungswert(self, func):
         u_vals = np.asarray([func(val) for val in self.vals])
         return self.erwartungswert(u_vals)
 
     def sicherheitsäquvivalent(self, func):
-        u_mean = self.erwartungswert_nutzenfunktion(func)
+        u_mean = self.nutzenerwartungswert(func)
         root_func = lambda x: func(x) - u_mean
         sae = fsolve(root_func, 0)
         return sae[0]
@@ -189,14 +189,6 @@ def plot_fsd(func1, func2, min, max, symbol1='x', symbol2='x'):
 
     f, ax = plt.subplots(1)
 
-    # plot ara1(x)
-    # y_func1 = []
-    # y_func2 = []
-    # for ind, x in enumerate(xs):
-    #     print("Noch zu berechnende {}".format(51-ind))
-    #     y_func1.append(integrate(func1, (x1, start, x)))
-    #     y_func2.append(integrate(func2, (x2, start, x)))
-
     print(integrate(func1, x1))
     func1 = lambdify(x1, integrate(func1, x1))
     func2 = lambdify(x2, integrate(func2, x2))
@@ -215,24 +207,3 @@ def plot_fsd(func1, func2, min, max, symbol1='x', symbol2='x'):
 
 def normal_dist_func(mean, var):
     return '(1/sqrt(2*3.14159265359*{}))*e**(-((x-{})**2)/(2{}))'.format(var, mean, var)
-
-# nutzenfunktion muss mit anderem Symbol geschrieben sein, damit wir dieses austauschen können
-# inv_func_1 muss als liste gegeben sein
-# def foobar(u_func, u_func_symbol, inv_func_1, inv_func_2, symbol='x'):
-#     factor = 1 / len(inv_func_1)
-#     base_fn = u_func
-#     final_fn = ""
-#
-#     for func in inv_func_1:
-#         final_fn += "+{}*(".format(factor) + base_fn.replace(u_func_symbol,
-#                                                              "({}*x+(1-x)*{})".format(func, inv_func_2)) + ")"
-#
-#     final_fn = parse_expr(final_fn)
-#     print(final_fn)
-#     y_ = Symbol('y')
-#     x_ = Symbol(symbol)
-#     x = maximum(final_fn, x_, Interval(0, 1))
-#     inverse = Eq(y_, final_fn)
-#     s = solve(inverse, x_)[0]
-#     max = s.subs(y_, x)
-#     return max
